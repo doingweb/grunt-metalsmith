@@ -8,43 +8,32 @@
 
 'use strict';
 
+var Metalsmith = require('metalsmith');
+
 module.exports = function(grunt) {
 
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
-
   grunt.registerMultiTask('metalsmith', 'Run Metalsmith as a Grunt task.', function() {
-    // Merge task-specific and/or target-specific options with these defaults.
+    var done = this.async();
+
     var options = this.options({
-      punctuation: '.',
-      separator: ', '
+      plugins: {
+      },
+      clean: true
     });
 
-    // Iterate over all specified file groups.
     this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
+      var metalsmith = new Metalsmith(process.cwd());
+      metalsmith.source(f.src[0]); // Only one source (the source directory) makes sense.
+      metalsmith.destination(f.dest);
+      metalsmith.clean(options.clean);
+      metalsmith.build(function(err) {
+        if (err) {
+          done(err);
         }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
 
-      // Handle options.
-      src += options.punctuation;
-
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
-
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
+        grunt.log.writeln('Built files in ' + metalsmith.source() + ' to ' + metalsmith.destination());
+        done();
+      });
     });
   });
-
 };

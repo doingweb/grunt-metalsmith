@@ -33,6 +33,54 @@ module.exports = function(grunt) {
       no_plugins: {
         src: 'test/fixtures/no_plugins',
         dest: 'tmp/no_plugins'
+      },
+      metadata: {
+        options: {
+          metadata: {
+            title: 'Testing Metadata',
+            description: 'The metadata option should be passed along to plugins.'
+          },
+          plugins: [
+            {
+              'metalsmith-templates': {
+                engine: 'handlebars',
+                directory: 'test/fixtures/metadata/templates'
+              }
+            }
+          ]
+        },
+        src: 'test/fixtures/metadata/src',
+        dest: 'tmp/metadata'
+      },
+      multiple_plugins: {
+        options: {
+          plugins: [
+            {
+              'metalsmith-markdown': {}
+            },
+            {
+              'metalsmith-templates': {
+                engine: 'handlebars',
+                directory: 'test/fixtures/multiple_plugins/templates'
+              }
+            }
+          ]
+        },
+        src: 'test/fixtures/multiple_plugins/src',
+        dest: 'tmp/multiple_plugins'
+      },
+      normalize_plugins: {
+        options: {
+          plugins: { // Note compact object format, instead of array.
+            'metalsmith-markdown': {},
+            'metalsmith-templates': {
+              engine: 'handlebars',
+              directory: 'test/fixtures/normalize_plugins/templates'
+            }
+          }
+        },
+        src: 'test/fixtures/normalize_plugins/src',
+        dest: 'tmp/normalize_plugins'
       }
     },
 
@@ -40,7 +88,6 @@ module.exports = function(grunt) {
     nodeunit: {
       tests: ['test/*_test.js']
     }
-
   });
 
   // Actually load this plugin's task(s).

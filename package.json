@@ -1,7 +1,7 @@
 {
   "name": "grunt-metalsmith",
   "description": "Run Metalsmith as a Grunt task.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "homepage": "https://github.com/doingweb/grunt-metalsmith",
   "author": {
     "name": "Chris Antes",

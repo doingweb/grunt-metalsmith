@@ -16,7 +16,9 @@ module.exports = function(grunt) {
     var done = this.async();
 
     var options = this.options({
-      clean: true
+      clean: true,
+      metadata : {},
+      plugins : {}
     });
 
     this.files.forEach(function(f) {

@@ -1,4 +1,4 @@
-# grunt-metalsmith
+# grunt-metalsmith [![Build Status](https://travis-ci.org/doingweb/grunt-metalsmith.svg?branch=master)](https://travis-ci.org/doingweb/grunt-metalsmith)
 
 Run Metalsmith as a Grunt task.
 

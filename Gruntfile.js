@@ -31,6 +31,9 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     metalsmith: {
       no_plugins: {
+        options: {
+          metadata: {}
+        },
         src: 'test/fixtures/no_plugins',
         dest: 'tmp/no_plugins'
       },
@@ -54,6 +57,7 @@ module.exports = function(grunt) {
       },
       multiple_plugins: {
         options: {
+          metadata: {},
           plugins: [
             {
               'metalsmith-markdown': {}
@@ -71,12 +75,15 @@ module.exports = function(grunt) {
       },
       normalize_plugins: {
         options: {
+          metadata: {},
           plugins: { // Note compact object format, instead of array.
             'metalsmith-markdown': {},
             'metalsmith-templates': {
               engine: 'handlebars',
               directory: 'test/fixtures/normalize_plugins/templates'
-            }
+            },
+            "./test/testPlugin": {},   //just dummy plugins to test loading plugins as a local js file
+            "./test/testPlugin.js": {}
           }
         },
         src: 'test/fixtures/normalize_plugins/src',

@@ -8,19 +8,23 @@
 
 'use strict';
 
-var Metalsmith = require('metalsmith');
+var Metalsmith = require('metalsmith'),
+    resolve = require('path').resolve,
+    exists = require('fs').existsSync;
 
 module.exports = function(grunt) {
 
   grunt.registerMultiTask('metalsmith', 'Run Metalsmith as a Grunt task.', function() {
-    var done = this.async();
+    var done = this.async(),
+        dir = process.cwd();
 
     var options = this.options({
       clean: true
     });
 
     this.files.forEach(function(f) {
-      var metalsmith = new Metalsmith(process.cwd());
+      var metalsmith = new Metalsmith(dir);
+
       metalsmith.source(f.src[0]); // Only one source (the source directory) makes sense.
       metalsmith.destination(f.dest);
       metalsmith.metadata(options.metadata);
@@ -33,7 +37,16 @@ module.exports = function(grunt) {
           var fn;
 
           try {
-            fn = require(name);
+            var local = resolve(dir, name);
+            var npm = resolve(dir, 'node_modules', name);
+
+            if (exists(local) || exists(local + '.js')) {
+              fn = require(local);
+            } else if (exists(npm)) {
+              fn = require(npm);
+            } else {
+              fn = require(name);
+            }
           } catch (e) {
             done(e);
             return;

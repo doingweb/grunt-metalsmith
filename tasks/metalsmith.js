@@ -32,13 +32,17 @@ module.exports = function(grunt) {
           var opts = plugin[name];
           var fn;
 
-          try {
-            fn = require(name);
-          } catch (e) {
-            done(e);
-            return;
+          if (typeof opts === 'function') {
+            opts = opts();
           }
-
+          if(opts) {
+            try {
+              fn = require(name);
+            } catch (e) {
+              done(e);
+              return;
+            }
+          }
           metalsmith.use(fn(opts));
         }
       });

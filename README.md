@@ -70,6 +70,17 @@ Default value: `[]`
 
 An array or object describing the plugins that Metalsmith should use.
 
+When using a object, the value of the key will be evaluated. If the value is a falsy value (undefined, false, ...) the plugin will not be activated.
+If the value is a function, the function will be evaluated before using, allowing for a dynamic configuration.
+
+Example:
+
+```js
+'metalsmith-drafts': function() {
+  return process.env.PRODUCTION === 'true';
+}
+```
+
 #### clean
 Type: `Boolean`
 Default value: `true`
